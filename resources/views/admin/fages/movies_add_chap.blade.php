@@ -38,8 +38,8 @@
 
                             </tr>
                             <tr>
-                                <td>Link phim</td>
-                                <th><input type="text" id="link_movis" name="link_movis" required style="width: 100%"></th>
+                                <td>Chọn File Phim</td>
+                                <th><input type="file" id="video_file" name="video_file" required accept="video/*"></th>
                             </tr>
                             </tbody>
                         </table>

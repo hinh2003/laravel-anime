@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class UserInfoController extends Controller
 {
-    //
     public function index(){
 
         $user = Auth::user();
-        $movies = $user->movies; // Sử dụng phương thức movies() đã định nghĩa trong User model
+        $movies = $user->movies;
 
         return view('Client.userinfo',compact('movies'));
-//        return dd($movies);
     }
 }

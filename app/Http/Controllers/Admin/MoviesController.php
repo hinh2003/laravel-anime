@@ -6,6 +6,7 @@ use App\Models\Category ;
 use App\Models\Status ;
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Services\UploadVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\Chap_movies;
@@ -161,17 +162,25 @@ class MoviesController extends Controller
     {
         $request->validate([
             'chapter' => 'required|integer',
-            'link_movis' => 'required|string',
+            'video_file' => 'required|mimes:mp4,mkv,avi,mov|max:204800',
             'movie_id' => 'required|integer|exists:movies,id'
         ]);
+        $videoFile = $request->file('video_file');
+        $filePath = $videoFile->getPathname();
 
-        $chap_movies = new Chap_movies();
-        $chap_movies->name_chap = $request->chapter;
-        $chap_movies->movie_id = $request->movie_id;
-        $chap_movies->link_chap = $request->link_movis;
-        $chap_movies->save();
+        $uploadServer = new UploadVideo();
+        $response = $uploadServer->upload($filePath);
+        dd($response);
+        if (isset($response['url'])) {
+            Movie::create([
+                'movie_id' => $request->movie_id,
+                'chapter' => $request->chapter,
+                'video_link' => $response['url'],
+            ]);
 
-        return redirect()->route('movies.addchap')->with('success', 'Phim đã được thêm thành công');
+            return back()->with('success', 'Phim đã được tải lên Hydrax!');
+        }
+        return back()->with('error', 'Lỗi khi tải lên Hydrax.');
     }
     public function updateChapMovie($id){
         $chap_movie = Chap_movies::where('movie_id', $id)->with('movie')->orderBy('name_chap', 'asc')->get();
