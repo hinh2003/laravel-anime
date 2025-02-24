@@ -13,14 +13,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
-        $middleware->redirectGuestsTo('/login');
         $middleware->redirectGuestsTo(fn (Request $request) => route('login'));
-        $middleware->alias([
-            'CheckRole' => \App\Http\Middleware\CheckRole::class,
 
+        $middleware->alias([
+            'auth' => \App\Http\Middleware\Authenticate::class,
+            'auth.sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            'CheckRole' => \App\Http\Middleware\CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+        $exceptions->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            return $request->expectsJson()
+                ? response()->json(['message' => 'Chưa đăng nhập'], 401)
+                : redirect()->guest(route('login'));
+        });
+    })
+    ->create();

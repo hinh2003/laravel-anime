@@ -15,11 +15,3 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('movies/list', [MoviesController::class, 'index']);
     Route::get('movies/{id}', [MoviesController::class, 'show']);
 });
-
-
-
-
-
-
-
-
