@@ -6,8 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-curl": "*",
+        "ext-fileinfo": "*",
         "laravel/framework": "^11.9",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "symfony/mime": "^7.2",
         "symfony/string": "^7.2"
     },
     "require-dev": {

@@ -32,4 +32,9 @@ class Movie extends Model
     public function Chap_movies(){
         return $this->hasMany(Chap_movies::class, 'movie_id');
     }
+    public static function findMovie($id)
+    {
+        return self::find($id);
+    }
+
 }

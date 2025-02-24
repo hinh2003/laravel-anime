@@ -6,14 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
-class MainController extends Controller
+class HomeAdminController extends Controller
 {
     public function index(){
-        $movies = Movie::all();
+        $movies = Movie::orderBy('created_at', 'desc')->paginate(5);
 
         return view('admin.fages.main',compact('movies'));
     }
     public function AccountMannger(){
         return view('admin.fages.accountMannager');
     }
+
+
 }

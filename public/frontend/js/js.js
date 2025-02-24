@@ -85,5 +85,3 @@ function checkvalidate() {
     return isCheck;
 
 }
-
-

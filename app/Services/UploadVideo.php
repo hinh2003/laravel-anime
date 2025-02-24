@@ -4,7 +4,12 @@ namespace App\Services;
 
 class UploadVideo
 {
-    private $uploadUrl = 'http://up.hydrax.net/c63a6715ad81a4512b1bac5458496fc4';
+    private $uploadUrl;
+
+    public function __construct()
+    {
+        $this->uploadUrl = config('services.hydrax_upload_url');
+    }
 
     public function upload($filePath)
     {
@@ -22,9 +27,15 @@ class UploadVideo
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_VERBOSE, true);
+
         $result = curl_exec($ch);
+        $error = curl_error($ch);
         curl_close($ch);
 
-        return json_decode($result, true);
+        if ($error) {
+            return ['error' => $error];
+        }
+
+        return json_decode($result, true) ?: ['error' => 'Không thể decode JSON từ response!'];
     }
 }

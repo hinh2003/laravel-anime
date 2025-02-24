@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{asset('frontend/css/style.css')}}">
     <title>ANIME HENTAI</title>
     <link rel="icon" href="'{{asset('frontend/images/Logo-main.ico')}}'">
-    <script src="{{asset('frontend/js.js.js')}}"></script>
-    <script src=""></script>
+    <script src="{{asset('frontend/js/admin/js.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 @yield('index')

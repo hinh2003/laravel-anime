@@ -2,51 +2,48 @@
 
 @include('admin.header')
 @include('Error.login')
-<section class="ftco-section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center mb-5">
-                <h2 style="color: white;" class="heading-section">Phim</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-wrap">
-                    <table class="table">
-                        <thead class="thead-primary">
-                        <tr>
 
-                            <th>Hình Ảnh</th>
-                            <th>Tên Phim</th>
-                            <th>Số Tập</th>
-                            <th>Thao tác</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($movies as $movie)
-                            <tr>
-                                <td><img src="{{ asset('frontend/' . $movie->pic) }}" alt="Ảnh" style="width: 150px; height: 150px;"></td>
-                                <td>{{ $movie->name_movie }}</td>
-                                <td>{{ $movie->years }}</td>
-                                <td>
-                                    <a href="{{ route('movies.update', $movie->id) }}">Cập nhật</a> |
-                                    <a href="{{route('chapmovies.edit',$movie->id)}}">Tập Phim</a>
-                                    <form action="{{ route('movies.delete', $movie->id) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" style="background: none; border: none; color: red; text-decoration: underline; cursor: pointer;">Xóa</button>
-                                    </form>
-
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    @csrf
-                </div>
-            </div>
+<div class="container mt-4">
+    <form id="search-form" class="mb-3">
+        <div class="input-group">
+            <input type="text" id="search" name="search" class="form-control" placeholder="Tìm kiếm phim...">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
         </div>
+    </form>
+
+    <div id="movies-table">
+        @include('admin.layout.movies_table')
     </div>
-</section>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#search-form').on('submit', function (e) {
+            e.preventDefault();
+
+            let query = $('#search').val();
+            $.ajax({
+                url: "{{ route('movies.search') }}",
+                method: "GET",
+                data: {search: query},
+                success: function (response) {
+                    $('#movies-table').html(response.html);
+                }
+            });
+        });
+
+        $('#search').on('keyup', function () {
+            let query = $(this).val();
+            $.ajax({
+                url: "{{ route('movies.search') }}",
+                method: "GET",
+                data: {search: query},
+                success: function (response) {
+                    $('#movies-table').html(response.html);
+                }
+            });
+        });
+    });
+
+</script>
 
 

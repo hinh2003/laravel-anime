@@ -5,26 +5,26 @@ use App\Http\Controllers\Clients\RegisterController;
 use App\Http\Controllers\Clients\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Admin\LoginAdminController ;
+use App\Http\Controllers\Admin\SessionController ;
 use \App\Http\Controllers\Admin\AccountController;
-use App\Http\Controllers\Admin\MainController;
+use App\Http\Controllers\Admin\HomeAdminController;
 use App\Http\Controllers\Admin\MoviesController;
 use App\Http\Controllers\Clients\MovieInfoControlleer;
 use App\Http\Controllers\LivemoviesController ;
 use App\Http\Controllers\Clients\MovieController ;
 use App\Http\Controllers\Clients\UserInfoController;
-
+use App\Http\Controllers\Admin\ChapMoviesController ;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route:: prefix('admin')->group(function () {
-    Route::get('/',[LoginAdminController::class,'index']);
-    Route::get('login',[LoginAdminController::class,'index'])->name('login');
-    Route::post('/login/store',[LoginAdminController::class,'store']);
-    Route::get('logout',[LoginAdminController::class,'Logout'])->name('logout');
+    Route::get('/',[SessionController::class,'index']);
+    Route::get('login',[SessionController::class,'index'])->name('login');
+    Route::post('/login/store',[SessionController::class,'store']);
+    Route::get('logout',[SessionController::class,'Logout'])->name('logout');
 
     Route::middleware(['auth','CheckRole'])->prefix('action')->group(function () {
 
-    Route::get('main',[MainController::class,'index'])->name('main');
+    Route::get('main',[HomeAdminController::class,'index'])->name('main');
 
     Route::get('movies/add',[MoviesController::class,'index'])->name('movies.add');
     Route::post('movies/add/store', [MoviesController::class,'handAddMoive'])->name('movies.add.store');
@@ -36,9 +36,9 @@ Route:: prefix('admin')->group(function () {
     Route::post('movies/update/{id}', [MoviesController::class, 'handUpdateMovie'])->name('movies.update');
 
         //Sua tap
-    Route::get('movies/updateChap/{id}', [MoviesController::class, 'updateChapMovie'])->name('chapmovies.edit');
-    Route::put('movies/updateChap/store/{id}', [MoviesController::class, 'handupdateChapMovie'])->name('chapmovies.update');
-    Route::Delete('movies/deleteChap/{id}', [MoviesController::class, 'deleteChapMovie'])->name('chapmovies.delete');
+    Route::get('movies/updateChap/{id}', [ChapMoviesController::class, 'updateChapMovie'])->name('chapmovies.edit');
+    Route::put('movies/updateChap/store/{id}', [ChapMoviesController::class, 'handupdateChapMovie'])->name('chapmovies.update');
+    Route::Delete('movies/deleteChap/{id}', [ChapMoviesController::class, 'deleteChapMovie'])->name('chapmovies.delete');
 
 
     Route::Delete('movies/delete/{id}', [MoviesController::class, 'handDelete'])->name('movies.delete');
@@ -50,8 +50,11 @@ Route:: prefix('admin')->group(function () {
     Route::delete('account/delete/{id}', [AccountController::class, 'handDelete'])->name('account.delete');
 
 //them tap phim
-    Route::get('movies/addchap',[MoviesController::class,'addChap'])->name('movies.addchap');
-    Route::post('movies/addchap/store',[MoviesController::class,'handAddChap'])->name('movies.addchap.store');
+    Route::get('movies/addchap',[ChapMoviesController::class,'addChap'])->name('movies.addchap');
+    Route::post('movies/addchap/store',[ChapMoviesController::class,'handAddChap'])->name('movies.addchap.store');
+
+    // tìm kiếm phim
+    Route::get('/movies/search', [MoviesController::class, 'search'])->name('movies.search');
 
 
     });

@@ -27,7 +27,7 @@ return [
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],
-
+    'hydrax_upload_url' => env('HYDRAX_UPLOAD_URL'),
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

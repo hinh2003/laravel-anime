@@ -21,7 +21,7 @@
                             </tr>
                             <tr>
                                 <td>Số Tập</td>
-                                <th><input type="number" name="years" id="years" required></th>
+                                <th><input type="number" name="episodes" id="episodes" required></th>
                             </tr>
                             <tr>
                                 <td>Ảnh</td>
