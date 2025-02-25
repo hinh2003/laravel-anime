@@ -20,7 +20,7 @@ class SessionController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('AuthToken')->plainTextToken;
+            $token = $user->createToken('auth_token', ['*'], now()->addDays(7));
 
             return response()->json([
                 'message' => 'Đăng nhập thành công',
