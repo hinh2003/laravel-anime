@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Clients\LoginController;
 use App\Http\Controllers\Clients\RegisterController;
 use App\Http\Controllers\Clients\SearchController;
@@ -55,6 +56,7 @@ Route:: prefix('admin')->group(function () {
 
     // tìm kiếm phim
     Route::get('/movies/search', [MoviesController::class, 'search'])->name('movies.search');
+    Route::resource('banners', BannerController::class);
 
 
     });

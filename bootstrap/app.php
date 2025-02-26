@@ -21,7 +21,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            'auth' => \App\Http\Middleware\Authenticate::class,
             'auth.sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'CheckRole' => \App\Http\Middleware\CheckRole::class,
         ]);
