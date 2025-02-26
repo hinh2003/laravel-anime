@@ -1,6 +1,5 @@
 <div class="heder">
     <nav class="navbar navbar-expand bg-dark menu-conten-boder" >
-        <a class="navbar-brand" href="#"></a></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -15,9 +14,11 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route('movies.addchap')}}">Thêm Tập</a>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/action/movies/category"">Thêm thể loại</a>
+                    <a class="nav-link" href="{{route('banners.index')}}">Quản lý banner</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/action/movies/category">Thêm thể loại</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/admin/action/account">Tài Khoản</a>

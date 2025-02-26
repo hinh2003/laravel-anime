@@ -6,6 +6,7 @@ use App\Models\Category ;
 use App\Models\Status ;
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Services\UploadVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\Chap_movies;
@@ -30,7 +31,7 @@ class MoviesController extends Controller
         // Validate dữ liệu đầu vào
         $request->validate([
             'name_movie' => 'required|string|max:255',
-            'years' => 'required|integer',
+            'episodes' => 'required|integer',
             'pic' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'country_id' => 'required|exists:countries,id',
             'status_id' => 'required|exists:statuses,id',
@@ -49,7 +50,7 @@ class MoviesController extends Controller
         // Tạo mới bộ phim
         $movie = new Movie();
         $movie->name_movie = $request->name_movie;
-        $movie->years = $request->years;
+        $movie->episodes = $request->episodes;
         $movie->pic = $path;
         $movie->country_id = $request->country_id;
         $movie->status_id = $request->status_id;
@@ -98,7 +99,7 @@ class MoviesController extends Controller
     public function handUpdateMovie(Request $request, $id){
         $request->validate([
             'name_movie' => 'required|string|max:255',
-            'years' => 'required|integer',
+            'episodes' => 'required|integer',
             'country_id' => 'required|exists:countries,id',
             'status_id' => 'required|exists:statuses,id',
             'name_category' => 'required|array',
@@ -107,10 +108,9 @@ class MoviesController extends Controller
         ]);
 
         $movie = Movie::findOrFail($id);
-        $path = $movie->pic; // Giữ lại đường dẫn ảnh cũ
+        $path = $movie->pic;
 
         if ($request->hasFile('pic')) {
-            // Xóa ảnh cũ nếu có ảnh mới
             if (File::exists(public_path('storage/' . $path))) {
                 File::delete(public_path('storage/' . $path));
             }
@@ -124,18 +124,16 @@ class MoviesController extends Controller
 
         $movie->update([
             'name_movie' => $request->name_movie,
-            'years' => $request->years,
+            'episodes' => $request->episodes,
             'pic' => $path,
             'country_id' => $request->country_id,
             'status_id' => $request->status_id,
             'description' => $request->description,
         ]);
 
-        // Lấy danh sách các ID của các thể loại từ request
         $nameCategoryIds = explode(',', $request->name_category[0]);
         $nameCategoryIds = array_map('trim', $nameCategoryIds);
         $nameCategoryIds = array_map('intval', $nameCategoryIds);
-        // Đồng bộ hóa các thể loại của phim
         $movie->categories()->sync($nameCategoryIds);
 
         return redirect()->route('main')->with('success', 'Phim đã được cập nhật thành công');
@@ -144,69 +142,25 @@ class MoviesController extends Controller
     public function handDelete($id)
     {
         $movie = Movie::find($id);
-        // Xóa bản ghi phim
         $movie->delete();
 
         return redirect()->route('main')->with('success', 'Phim đã được xóa thành công');
 
     }
-    public function addChap()
-    {
-        $movies =  Movie::all() ;
-        $chapter = Chap_movies::all() ;
-        return view('admin.fages.movies_add_chap' ,compact('movies','chapter'));
 
+    public function search(Request $request) {
+        if ($request->ajax()) {
+            $query = Movie::query();
+
+            if ($request->search) {
+                $query->where('name_movie', 'like', '%' . $request->search . '%');
+            }
+
+            $movies = $query->paginate(5);
+
+            return response()->json([
+                'html' => view('admin.layout.movies_table', compact('movies'))->render()
+            ]);
+        }
     }
-    public function handAddChap(Request $request)
-    {
-        $request->validate([
-            'chapter' => 'required|integer',
-            'link_movis' => 'required|string',
-            'movie_id' => 'required|integer|exists:movies,id'
-        ]);
-
-        $chap_movies = new Chap_movies();
-        $chap_movies->name_chap = $request->chapter;
-        $chap_movies->movie_id = $request->movie_id;
-        $chap_movies->link_chap = $request->link_movis;
-        $chap_movies->save();
-
-        return redirect()->route('movies.addchap')->with('success', 'Phim đã được thêm thành công');
-    }
-    public function updateChapMovie($id){
-        $chap_movie = Chap_movies::where('movie_id', $id)->with('movie')->orderBy('name_chap', 'asc')->get();
-        return view('admin.fages.update_chapter' ,compact('chap_movie'));
-    }
-    public function handupdateChapMovie(Request $request, $id)
-    {
-        // Validate incoming request
-        $request->validate([
-            'name_chap_' . $id => 'required|string',
-            'link_chap_' . $id => 'required|string',
-        ]);
-
-        // Find the specific Chap_movie to update
-        $chap_movie = Chap_movies::findOrFail($id);
-
-        // Update the fields
-        $chap_movie->name_chap = $request->input('name_chap_' . $id);
-        $chap_movie->link_chap = $request->input('link_chap_' . $id);
-        $chap_movie->save();
-
-        // Redirect back or wherever appropriate after update
-        return redirect()->back()->with('success', 'Cập nhật tập phim thành công');
-    }
-
-
-// Ví dụ về xóa tập phim
-    public function deleteChapMovie($id)
-    {
-        $chap_movie = Chap_movies::findOrFail($id);
-        $chap_movie->delete();
-
-        return redirect()->back()->with('success', 'Xóa tập phim thành công');
-    }
-
-
-
 }

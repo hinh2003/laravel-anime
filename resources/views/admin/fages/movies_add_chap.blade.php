@@ -17,29 +17,30 @@
                             <tr>
                                 <td>Phim</td>
                                 <th>
-                                    <select id="movie_id" name="movie_id" required>
+                                    <select id="movie_id" name="movie_id" required onchange="updateChapters()">
                                         <option value="">Chọn phim</option>
                                         @foreach($movies as $movie)
-                                            <option value="{{ $movie->id }}">{{ $movie->name_movie }}</option>
+                                            <option value="{{ $movie['id'] }}"
+                                                    data-episodes="{{ $movie['episodes'] }}"
+                                                    data-existing-chapters="{{ json_encode($movie['existing_chapters']) }}">
+                                                {{ $movie['name_movie'] }}
+                                            </option>
                                         @endforeach
                                     </select>
+
                                 </th>
                             </tr>
                             <tr>
                                 <td>Tập</td>
                                 <th>
                                     <select id="chapter" name="chapter" required>
-                                        @for($i= 1 ; $i <= $movie->years ; $i++)
-                                            <option value="{{$i }}" >{{ $i }}</option>
-
-                                        @endfor
                                     </select>
                                 </th>
 
                             </tr>
                             <tr>
-                                <td>Link phim</td>
-                                <th><input type="text" id="link_movis" name="link_movis" required style="width: 100%"></th>
+                                <td>Chọn File Phim</td>
+                                <th><input type="file" id="video_file" name="video_file" required accept="video/*"></th>
                             </tr>
                             </tbody>
                         </table>
