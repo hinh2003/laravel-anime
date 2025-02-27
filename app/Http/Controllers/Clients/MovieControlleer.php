@@ -10,12 +10,15 @@ class MovieControlleer extends Controller
 {
     public function index($identifier)
     {
+
         $movie = Movie::with(['country', 'status', 'categories'])
             ->where('slug', $identifier)
             ->orWhere('id', $identifier)
             ->firstOrFail();
+        $comments = $movie->comments()->with('user')->latest()->get();
 
-        return view('Client.Movies.index', compact('movie'));
+
+        return view('Client.Movies.index', compact('movie','comments'));
     }
 
 
