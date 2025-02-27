@@ -1,7 +1,7 @@
 @include('index')
 @include('header')
 <body>
-
+@include('Client/Banner/index')
 
 <div class="menu-conten" >
     <div class="main-container-title">
@@ -14,12 +14,11 @@
         <div class="list">
             @foreach($moviesAnime as $movieAnime)
             <div class="iteam">
-                <a href="{{ route('movies.info', $movieAnime->id) }}">
-                <img src="{{ url('frontend/' . $movieAnime->pic) }}" alt="{{ $movieAnime->name_movie }}">
+                <a href="{{ route('movies.info', !empty($movieAnime->slug) ? $movieAnime->slug : $movieAnime->id) }}">
+                <img class="card-img-top" src="{{ url('frontend/' . $movieAnime->pic) }}" alt="{{ $movieAnime->name_movie }}">
                     <h4>{{$movieAnime->name_movie}}</h4> </a>
             </div>
                 @endforeach
-
         </div>
     </div>
     <div class="xem-them"><a  href="{{route('list.contry',2)}}" title="PHim nguoi dong">Xem thêm...</a></div>
@@ -31,16 +30,13 @@
     <div class="main-container-list">
         <div class="main-container-list-mid">
             <div class="list">
-                <div class="list">
                     @foreach($moviesOr as $movieOr)
                         <div class="iteam">
-                            <a href="{{route('movies.info',$movieOr->id)}}">
-                            <img  src="{{ url('frontend/' . $movieOr->pic) }}" alt="{{ $movieOr->name_movie }}">
+                            <a href="{{route('movies.info',!empty($movieOr->slug) ? $movieOr->slug : $movieOr->id)}}">
+                            <img class="card-img-top" src="{{ url('frontend/' . $movieOr->pic) }}" alt="{{ $movieOr->name_movie }}">
                             <h4>{{$movieOr->name_movie}}</h4> </a>
                         </div>
                     @endforeach
-
-                </div>
             </div>
         </div>
     </div>
@@ -50,15 +46,5 @@
 </div>
 </div>
 
-<div class="footer" style="background-color: black;">
-    <div  class="footer-sub" >
-
-        <address class="addres">
-            <p><b>Thiết kế bởi : <strong>Nguyễn Văn Tuấn Hinh</strong></b></p>
-            <p><i>Email : Muvodich@gmail.com</i></a></p><br>
-        </address>
-        <a href=""><img class="logo-end" src="/images/Logo-main.png" alt=""></a>
-    </div>
-</div>
+@include('footer')
 </body>
-</html>

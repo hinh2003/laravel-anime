@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Banner;
 use App\Models\Status;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category ;
@@ -28,6 +30,17 @@ class AppServiceProvider extends ServiceProvider
             $countries = Country::all();
 
             $view->with(compact('categories', 'status', 'countries'));
+        });
+        View::composer('Client/Banner/index', function ($view) {
+            $now = Carbon::now();
+
+            $banners = Banner::where('status', 1)
+                ->where('start_date', '<=', $now)
+                ->where('end_date', '>=', $now)
+                ->orderBy('priority', 'asc')
+                ->take(10)->get();
+            $view->with(compact('banners'));
+
         });
     }
 }

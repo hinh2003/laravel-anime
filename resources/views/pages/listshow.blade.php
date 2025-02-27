@@ -13,9 +13,9 @@
         <div class="list">
             @foreach($movies as $movie)
                 <div class="iteam">
-                    <a href="{{ route('movies.info', $movie->id) }}">
+                    <a href="{{ route('movies.info', !empty($movie->slug) ? $movie->slug : $movie->id) }}">
 
-                    <img src="{{ url('frontend/' . $movie->pic) }}" alt="{{ $movie->name_movie }}">
+                    <img class="card-img-top" src="{{ url('frontend/' . $movie->pic) }}" alt="{{ $movie->name_movie }}">
                     <h4>{{$movie->name_movie}}</h4> </a>
                 </div>
             @endforeach

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function index(){
-        return view('pages.login');
+        return view('Client.Session.login');
     }
     public function store(Request $request){
         if(Auth::attempt([

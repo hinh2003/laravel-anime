@@ -78,17 +78,18 @@
                     .then(data => {
                         liveSearch.innerHTML = '';
                         data.forEach(movie => {
+                            const url = movie.slug ? `/movies/${movie.slug}` : `/movies/${movie.id}`;
                             const li = document.createElement('li');
                             li.classList.add('dropdown-item');
-                            li.innerHTML = `<a href="/movies/${movie.id}">${movie.name_movie}</a>`;
-                            liveSearch.appendChild(li); 
+                            li.innerHTML = `<a href="${url}">${movie.name_movie}</a>`;
+                            liveSearch.appendChild(li);
                         });
                         liveSearch.style.display = 'block';
                     })
                     .catch(error => console.error('Error:', error));
             } else {
                 liveSearch.innerHTML = '';
-                liveSearch.style.display = 'none'; 
+                liveSearch.style.display = 'none';
             }
         }
 
@@ -102,10 +103,10 @@
         function hideLiveSearch() {
             hideTimeout = setTimeout(() => {
                 liveSearch.style.display = 'none';
-            }, 1000); 
+            }, 1000);
         }
         document.querySelector('.searchform').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
         });
 
         searchInput.addEventListener('keyup', handleSearch);
