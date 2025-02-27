@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Clients\CommentController;
 use App\Http\Controllers\Clients\LoginController;
 use App\Http\Controllers\Clients\RegisterController;
 use App\Http\Controllers\Clients\SearchController;
@@ -98,5 +99,7 @@ Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 //thong tin nguoi dung
 Route::get('/profile',[UserController::class,'index'])->name('profile');
+Route::post('/movies/{movie}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('/movies/{movie}/comments/list', [CommentController::class, 'list']);
 
 

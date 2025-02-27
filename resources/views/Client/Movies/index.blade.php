@@ -33,5 +33,7 @@
             </div>
         </div>
     </div>
+    @include('Client.Comments.comment', ['comments' => $comments])
 </div>
+
 
