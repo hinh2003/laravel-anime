@@ -11,7 +11,7 @@ class RegisterController extends Controller
 {
     //
     public function index(){
-        return view('pages.register');
+        return view('Client.Session.register');
     }
     public function register(Request $request){
         $request->validate([
@@ -23,13 +23,8 @@ class RegisterController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
-            'role_id' => 1, // Gán role_id mặc định, có thể thay đổi tùy theo yêu cầu của bạn
+            'role_id' => 1,
         ]);
-
-        // Đăng nhập ngay sau khi đăng ký thành công (tuỳ chọn)
-        // Auth::login($user);
-
-        // Chuyển hướng người dùng sau khi đăng ký thành công
         return redirect()->route('login')->with('success', 'Đăng ký thành công!');
     }
 }

@@ -28,7 +28,6 @@ class MoviesController extends Controller
     public function handAddMoive(Request $request)
     {
 
-        // Validate dữ liệu đầu vào
         $request->validate([
             'name_movie' => 'required|string|max:255',
             'episodes' => 'required|integer',
@@ -38,31 +37,30 @@ class MoviesController extends Controller
             'name_category' => 'required|array',
             'name_category.*' => 'exists:categories,id',
             'description' => 'required|string',
+            'slug_movie'=>'required|unique:movies,slug',
         ]);
 
-        // Xử lý upload hình ảnh
         if ($request->hasFile('pic')) {
             $originalName = $request->file('pic')->getClientOriginalName();
             $path = $request->file('pic')->move(public_path('frontend/images'), $originalName);
             $path = 'images/' . $originalName;
         }
 
-        // Tạo mới bộ phim
         $movie = new Movie();
         $movie->name_movie = $request->name_movie;
         $movie->episodes = $request->episodes;
+        $movie->slug = $request->slug_movie;
         $movie->pic = $path;
         $movie->country_id = $request->country_id;
         $movie->status_id = $request->status_id;
         $movie->description = $request->description;
         $movie->save();
 
-// Lấy các ID của thể loại từ request
+
         $nameCategoryIds = explode(',', $request->name_category[0]);
         $nameCategoryIds = array_map('trim', $nameCategoryIds);
         $nameCategoryIds = array_map('intval', $nameCategoryIds);
 
-// Gắn từng thể loại vào phim bằng phương thức attach()
         $movie->categories()->attach($nameCategoryIds);
 
         return redirect()->route('movies.add')->with('success', 'Phim đã được thêm thành công');
@@ -105,6 +103,7 @@ class MoviesController extends Controller
             'name_category' => 'required|array',
             'name_category.*' => 'exists:categories,id',
             'description' => 'required|string',
+            'slug_movie' => 'required|unique:movies,slug,' . $id,
         ]);
 
         $movie = Movie::findOrFail($id);
@@ -114,14 +113,10 @@ class MoviesController extends Controller
             if (File::exists(public_path('storage/' . $path))) {
                 File::delete(public_path('storage/' . $path));
             }
-            // Lấy tên gốc của file
             $originalName = $request->file('pic')->getClientOriginalName();
-            // Di chuyển file tới thư mục 'public/images' với tên gốc
             $path = $request->file('pic')->move(public_path('frontend/images'), $originalName);
-            // Lưu đường dẫn tương đối vào cơ sở dữ liệu
             $path = 'images/' . $originalName;
         }
-
         $movie->update([
             'name_movie' => $request->name_movie,
             'episodes' => $request->episodes,
@@ -129,6 +124,7 @@ class MoviesController extends Controller
             'country_id' => $request->country_id,
             'status_id' => $request->status_id,
             'description' => $request->description,
+            'slug' => $request->input('slug_movie'),
         ]);
 
         $nameCategoryIds = explode(',', $request->name_category[0]);

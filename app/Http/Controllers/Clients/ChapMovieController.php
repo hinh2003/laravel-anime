@@ -7,7 +7,7 @@ use App\Models\Chap_movies;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
-class MovieController extends Controller
+class ChapMovieController extends Controller
 {
     public function show(Movie $movie)
     {
@@ -15,12 +15,12 @@ class MovieController extends Controller
 
         if ($chapters->isEmpty()) {
             $default_chapter = null;
-            return view('pages.videoMovies', compact('movie', 'chapters', 'default_chapter'))->with('message', 'Bộ phim chưa có tập nào.');
+            return view('Client.Chap_moive.index', compact('movie', 'chapters', 'default_chapter'))->with('message', 'Bộ phim chưa có tập nào.');
         }
 
         $default_chapter = $chapters->first();
 
-        return view('pages.videoMovies', compact('movie', 'chapters', 'default_chapter'));
+        return view('Client.Chap_moive.index', compact('movie', 'chapters', 'default_chapter'));
     }
 
     public function showChapter(Movie $movie, $chapter)
@@ -29,6 +29,6 @@ class MovieController extends Controller
 
         $selected_chapter = Chap_movies::findOrFail($chapter);
 
-        return view('pages.videoMovies', compact('movie', 'chapters', 'selected_chapter'));
+        return view('Client.Chap_moive.videoMovies', compact('movie', 'chapters', 'selected_chapter'));
     }
 }

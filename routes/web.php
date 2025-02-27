@@ -10,10 +10,10 @@ use App\Http\Controllers\Admin\SessionController ;
 use \App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\HomeAdminController;
 use App\Http\Controllers\Admin\MoviesController;
-use App\Http\Controllers\Clients\MovieInfoControlleer;
+use App\Http\Controllers\Clients\MovieControlleer;
 use App\Http\Controllers\LivemoviesController ;
-use App\Http\Controllers\Clients\MovieController ;
-use App\Http\Controllers\Clients\UserInfoController;
+use App\Http\Controllers\Clients\ChapMovieController ;
+use App\Http\Controllers\Clients\UserController;
 use App\Http\Controllers\Admin\ChapMoviesController ;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -83,20 +83,20 @@ Route::post('/register/store',[RegisterController::class,'register'])->name('reg
 //Dang xuat
 Route::get('/logout',[LoginController::class,'logout'])->name('logout');
 //Phim info
-Route::get('movies/{id}',[MovieInfoControlleer::class,'index'])->name('movies.info');
+Route::get('movies/{identifier}',[MovieControlleer::class,'index'])->name('movies.info');
 //likeand unlike
 
 Route::post('/movies/{movie}/like', [LivemoviesController::class, 'likeMovie'])->middleware('auth');
 Route::post('/movies/{movie}/unlike', [LivemoviesController::class, 'unlikeMovie'])->middleware('auth');
 //xem phim
 
-Route::get('/movies/watch/{movie}', [MovieController::class, 'show'])->name('movies.show');
-Route::get('/movies/{movie}/chapters/{chapter}', [MovieController::class, 'showChapter'])->name('movies.chapter');
+Route::get('/movies/watch/{movie}', [ChapMovieController::class, 'show'])->name('movies.show');
+Route::get('/movies/{movie}/chapters/{chapter}', [ChapMovieController::class, 'showChapter'])->name('movies.chapter');
 //timkiem
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 //thong tin nguoi dung
-Route::get('/profile',[UserInfoController::class,'index'])->name('profile');
+Route::get('/profile',[UserController::class,'index'])->name('profile');
 
 

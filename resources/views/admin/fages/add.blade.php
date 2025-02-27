@@ -20,6 +20,10 @@
                                 <th><input type="text" name="name_movie" id="name_movie" required></th>
                             </tr>
                             <tr>
+                                <td>Slug</td>
+                                <th><input type="text" name="slug_movie" id="slug_movie" required readonly></th>
+                            </tr>
+                            <tr>
                                 <td>Số Tập</td>
                                 <th><input type="number" name="episodes" id="episodes" required></th>
                             </tr>
@@ -119,10 +123,5 @@
 
         document.querySelector('#name_category').value = categoryIds.join(',');
     }
-
-
-
-
-
 </script>
 

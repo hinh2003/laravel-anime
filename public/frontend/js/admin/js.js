@@ -20,5 +20,25 @@ function updateChapters() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    let nameMovieInput = document.querySelector("#name_movie");
+    let slugMovieInput = document.querySelector("#slug_movie");
+
+    if (nameMovieInput && slugMovieInput) {
+        nameMovieInput.addEventListener("input", function () {
+            slugMovieInput.value = convertToSlug(this.value);
+        });
+    }
+});
+
+function convertToSlug(text) {
+    return text.toLowerCase()
+        .trim()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d").replace(/Đ/g, "D")
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+        .replace(/-+/g, '-');
+}
 
 
