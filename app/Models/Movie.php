@@ -41,5 +41,10 @@ class Movie extends Model
     {
         return $this->hasMany(Comment::class, 'movie_id', 'id');
     }
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'like_movies', 'movie_id', 'user_id')
+            ->withTimestamps();
+    }
 
 }

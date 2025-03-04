@@ -14,7 +14,13 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $movies = Movie::with(['categories'])->get();
+        $movies = Movie::with(['categories'])
+            ->leftJoin('chap_movies', 'movies.id', '=', 'chap_movies.movie_id')
+            ->select('movies.*', \DB::raw('COALESCE(MAX(chap_movies.created_at), movies.updated_at) as latest_update'))
+            ->groupBy('movies.id')
+            ->orderByDesc('latest_update')
+            ->take(10)
+            ->get();
         return response()->json(['movies' => $movies]);
     }
 

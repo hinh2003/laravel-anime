@@ -10,7 +10,7 @@ class ChapMoviesController extends Controller
 {
     public function index($id)
     {
-        $chap_movies = Chap_movies::where('movie_id',$id)->get();
+        $chap_movies = Chap_movies::where('movie_id',$id)->select('name_chap','id','aws_link','movie_id')->get();
 
         if (!$chap_movies) {
             return response()->json([

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Chap_movies extends Model
 {
     use HasFactory;
-    protected $fillable = ['name_chap', 'link_chap', 'movie_id', 'created_at', 'updated_at'];
+    protected $fillable = ['name_chap', 'link_chap', 'movie_id', 'created_at', 'updated_at','aws_link'];
 
     public function movie()
     {
