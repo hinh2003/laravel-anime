@@ -1,10 +1,12 @@
 <?php
 
+use App\Events\CommentPost;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Clients\CommentController;
 use App\Http\Controllers\Clients\LoginController;
 use App\Http\Controllers\Clients\RegisterController;
 use App\Http\Controllers\Clients\SearchController;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\SessionController ;
@@ -102,4 +104,15 @@ Route::get('/profile',[UserController::class,'index'])->name('profile');
 Route::post('/movies/{movie}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('/movies/{movie}/comments/list', [CommentController::class, 'list']);
 
+Route::get('/test', function () {
+    $comment = Comment::create([
+        'content' => 'Hiohihihi',
+        'user_id' => 1,
+        'movie_id' => 4,
+    ]);
+
+    broadcast(new CommentPost($comment));
+
+    return "this is comment";
+});
 
