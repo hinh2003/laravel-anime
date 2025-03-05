@@ -28,7 +28,6 @@ class ChapMovieController extends Controller
         $chapters = Chap_movies::where('movie_id', $movie->id)->orderBy('name_chap', 'asc')->get();
 
         $selected_chapter = Chap_movies::findOrFail($chapter);
-
         return view('Client.Chap_moive.videoMovies', compact('movie', 'chapters', 'selected_chapter'));
     }
 }
