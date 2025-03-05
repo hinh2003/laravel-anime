@@ -19,8 +19,7 @@ class MoviesController extends Controller
             ->select('movies.*', \DB::raw('COALESCE(MAX(chap_movies.created_at), movies.updated_at) as latest_update'))
             ->groupBy('movies.id')
             ->orderByDesc('latest_update')
-            ->take(10)
-            ->get();
+            ->paginate(10);
         return response()->json(['movies' => $movies]);
     }
 
