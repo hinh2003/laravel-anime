@@ -65,4 +65,19 @@ class MoviesController extends Controller
     {
         //
     }
+
+    public function search($name)
+    {
+        try {
+            $movies = Movie::where('name_movie', 'LIKE', '%' . $name . '%')->get();
+
+            if ($movies->isEmpty()) {
+                return response()->json(['message' => 'Không có dữ liệu phim.'], 404);
+            }
+
+            return response()->json(['movies' => $movies], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Có lỗi xảy ra, vui lòng thử lại sau.'], 500);
+        }
+    }
 }

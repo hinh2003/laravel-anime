@@ -12,6 +12,7 @@ Route::post('/register', [SessionController::class, 'register']);
 // list phim
 Route::get('movies/list', [MoviesController::class, 'index']);
 Route::get('movies/{slug}', [MoviesController::class, 'show']);
+Route::get('movies/find/{name}', [MoviesController::class, 'search']);
 //list banner
 Route::get('banner', [BannerController::class, 'index']);
 //chap phim
