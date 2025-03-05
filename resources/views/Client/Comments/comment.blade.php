@@ -24,66 +24,72 @@
         @endif
     </div>
 </div>
-
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 <script>
-    $(document).ready(function() {
-        $('#commentForm').submit(function(e) {
-            e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("🔄 Listening to 'comment' channel...");
 
-            let content = $('#commentContent').val();
-            let movieId = $('#commentsList').data('movie-id');
-
-            $.ajax({
-                url: "/movies/" + movieId + "/comments",
-                type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    content: content
-                },
-                success: function(response) {
-                    if(response.success) {
-                        $('#commentContent').val('');
-                        loadComments();
-                    }
-                },
-                error: function(xhr) {
-                    console.log(xhr.responseText);
-                }
+        Echo.channel('comment')
+            .listen('.CommentPost', (event) => {
+                console.log('🔥 Received event:', event);
+            })
+            .error((error) => {
+                console.error('❌ Echo error:', error);
             });
-        });
-
-        function loadComments() {
-            let movieId = "{{ $movie->id }}";
-
-            $.ajax({
-                url: "/movies/" + movieId + "/comments/list",
-                type: "GET",
-                success: function(response) {
-                    if (response.success) {
-                        let commentsHtml = "";
-                        response.comments.forEach(comment => {
-                            commentsHtml += `
-                        <div class="comment">
-                            <strong>${comment.user}</strong> - ${comment.created_at}
-                            <p>${comment.content}</p>
-                        </div>
-                    `;
-                        });
-                        $('#commentsList').html(commentsHtml);
-                    }
-                },
-                error: function(xhr) {
-                    console.log(xhr.responseText);
-                }
-            });
-        }
-
-        Echo.channel('comments.{{ $movie->id }}')
-            .listen('NewCommentEvent', (data) => {
-                loadComments();
-            });
-
-        loadComments();
     });
+
+
+    {{--$(document).ready(function() {--}}
+    {{--    $('#commentForm').submit(function(e) {--}}
+    {{--        e.preventDefault();--}}
+
+    {{--        let content = $('#commentContent').val();--}}
+    {{--        let movieId = $('#commentsList').data('movie-id');--}}
+
+    {{--        $.ajax({--}}
+    {{--            url: "/movies/" + movieId + "/comments",--}}
+    {{--            type: "POST",--}}
+    {{--            data: {--}}
+    {{--                _token: "{{ csrf_token() }}",--}}
+    {{--                content: content--}}
+    {{--            },--}}
+    {{--            success: function(response) {--}}
+    {{--                if(response.success) {--}}
+    {{--                    $('#commentContent').val('');--}}
+    {{--                    loadComments();--}}
+    {{--                }--}}
+    {{--            },--}}
+    {{--            error: function(xhr) {--}}
+    {{--                console.log(xhr.responseText);--}}
+    {{--            }--}}
+    {{--        });--}}
+    {{--    });--}}
+
+    {{--    function loadComments() {--}}
+    {{--        let movieId = "{{ $movie->id }}";--}}
+
+    {{--        $.ajax({--}}
+    {{--            url: "/movies/" + movieId + "/comments/list",--}}
+    {{--            type: "GET",--}}
+    {{--            success: function(response) {--}}
+    {{--                if (response.success) {--}}
+    {{--                    let commentsHtml = "";--}}
+    {{--                    response.comments.forEach(comment => {--}}
+    {{--                        commentsHtml += `--}}
+    {{--                    <div class="comment">--}}
+    {{--                        <strong>${comment.user}</strong> - ${comment.created_at}--}}
+    {{--                        <p>${comment.content}</p>--}}
+    {{--                    </div>--}}
+    {{--                `;--}}
+    {{--                    });--}}
+    {{--                    $('#commentsList').html(commentsHtml);--}}
+    {{--                }--}}
+    {{--            },--}}
+    {{--            error: function(xhr) {--}}
+    {{--                console.log(xhr.responseText);--}}
+    {{--            }--}}
+    {{--        });--}}
+    {{--    }--}}
+    {{--});--}}
 
 </script>

@@ -23,7 +23,6 @@ class CommentController extends Controller
         $comment->user_id = Auth::id();
         $comment->movie_id = $movie->id;
         $comment->save();
-        broadcast(new NewCommentEvent($comment))->toOthers();
 
         return response()->json([
             'success' => true,
