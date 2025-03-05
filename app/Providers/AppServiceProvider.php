@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Banner;
 use App\Models\Status;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category ;
@@ -24,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Validator::extend('max_upload_size', function ($attribute, $value, $parameters, $validator) {
+            $maxSize = (int) ini_get('upload_max_filesize') * 1024;
+            return $value->getSize() <= $maxSize;
+        });
         View::composer('header', function ($view) {
             $categories = Category::all();
             $status = Status::all();

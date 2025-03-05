@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
@@ -13,8 +14,13 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $movies = Movie::all();
-        return response()->json($movies);
+        $movies = Movie::with(['categories'])
+            ->leftJoin('chap_movies', 'movies.id', '=', 'chap_movies.movie_id')
+            ->select('movies.*', \DB::raw('COALESCE(MAX(chap_movies.created_at), movies.updated_at) as latest_update'))
+            ->groupBy('movies.id')
+            ->orderByDesc('latest_update')
+            ->paginate(10);
+        return response()->json(['movies' => $movies]);
     }
 
     /**
@@ -28,13 +34,13 @@ class MoviesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id, Request $request)
+    public function show($identifier)
     {
-        $slug = $request->query('slug');
 
-        $movie = $slug
-            ? Movie::where('slug', $slug)->first()
-            : Movie::find($id);
+        $movie = Movie::with(['country', 'status', 'categories'])
+            ->where('slug', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
 
         if (!$movie) {
             return response()->json(['message' => 'Movie not found'], 404);

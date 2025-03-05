@@ -27,16 +27,13 @@
                                             </option>
                                         @endforeach
                                     </select>
-
                                 </th>
                             </tr>
                             <tr>
                                 <td>Tập</td>
                                 <th>
-                                    <select id="chapter" name="chapter" required>
-                                    </select>
+                                    <select id="chapter" name="chapter" required></select>
                                 </th>
-
                             </tr>
                             <tr>
                                 <td>Chọn File Phim</td>
@@ -45,7 +42,13 @@
                             </tbody>
                         </table>
                         <p style="color: red;" id="result1"></p>
-                        <input type="submit" id="themphim" name="themphim" value="Thêm Phim">
+
+                        <input type="submit" id="themphim_btn" name="themphim" value="Thêm Phim">
+                        <div id="loading" style="display: none; color: white;">
+                            <span>Đang tải lên...</span>
+                            <img src="{{ asset('/frontend/gif/loading.gif') }}" alt="Loading" style="width: 40px; height: 40px;">
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -55,3 +58,13 @@
         @include('Error.login')
     </div>
 </section>
+<script>
+    document.getElementById('themphim').addEventListener('submit', function(event) {
+        let submitBtn = document.getElementById('themphim_btn');
+        let loadingDiv = document.getElementById('loading');
+
+        submitBtn.style.display = 'none';
+        loadingDiv.style.display = 'block';
+    });
+
+</script>

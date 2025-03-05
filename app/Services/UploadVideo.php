@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
+
 class UploadVideo
 {
     private $uploadUrl;
@@ -37,5 +39,22 @@ class UploadVideo
         }
 
         return json_decode($result, true) ?: ['error' => 'Không thể decode JSON từ response!'];
+    }
+
+    public function uploadVideoAWS($videoFile)
+    {
+        $path = Storage::disk('s3')->put('videos', $videoFile, 'public');
+
+        if (empty($path)) {
+            return response()->json(['error' => 'Không thể tải video lên S3.'], 400);
+        }
+
+        $url = Storage::disk('s3')->url($path);
+
+        if (empty($url)) {
+            return response()->json(['error' => 'Không thể lấy URL từ S3.'], 400);
+        }
+
+        return ['url' => $url];
     }
 }

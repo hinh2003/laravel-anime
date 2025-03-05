@@ -33,7 +33,7 @@ class ChapMoviesController extends Controller
     {
         $request->validate([
             'chapter' => 'required|integer',
-            'video_file' => 'required|mimes:mp4,mkv,avi,mov|max:204800',
+            'video_file' => 'required|mimes:mp4,mkv,avi,mov',
             'movie_id' => 'required|integer|exists:movies,id'
         ]);
         $videoFile = $request->file('video_file');
@@ -41,10 +41,12 @@ class ChapMoviesController extends Controller
 
         $uploadServer = new UploadVideo();
         $response = $uploadServer->upload($filePath);
+        $response_aws = $uploadServer->uploadVideoAWS($videoFile);
         if (isset($response['urlIframe'])) {
             Chap_movies::create([
                 'movie_id' => $request->movie_id,
                 'link_chap' => $response['urlIframe'],
+                'aws_link' => $response_aws['url'],
                 'name_chap' => request()->chapter,
             ]);
 
