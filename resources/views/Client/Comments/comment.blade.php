@@ -27,14 +27,14 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        console.log("🔄 Listening to 'comment' channel...");
+        console.log("Listening to 'comment' channel...");
 
         Echo.channel('comment')
             .listen('.CommentPost', (event) => {
-                console.log('🔥 Received event:', event);
+                console.log('Received event:', event);
             })
             .error((error) => {
-                console.error('❌ Echo error:', error);
+                console.error('Echo error:', error);
             });
     });
 
