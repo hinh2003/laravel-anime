@@ -20,8 +20,12 @@
                                 <th><input type="text" name="name_movie" id="name_movie" value="{{ $movie->name_movie }}" required></th>
                             </tr>
                             <tr>
+                                <td>Slug</td>
+                                <th><input type="text" name="slug_movie" id="slug_movie" required readonly value="{{$movie->slug}}"></th>
+                            </tr>
+                            <tr>
                                 <td>Số Tập</td>
-                                <th><input type="number" name="years" id="years" value="{{ $movie->years }}" required></th>
+                                <th><input type="number" name="episodes" id="episodes" value="{{ $movie->episodes }}" required></th>
                             </tr>
                             <tr>
                                 <td>Ảnh</td>
@@ -91,32 +95,26 @@
         var selectedOption = this.value;
         var selectedText = this.options[this.selectedIndex].text;
 
-        // Check if the selected option is already selected
         var isSelected = document.querySelector('#selected_categories_' + selectedOption);
         if (!isSelected) {
-            // Create a new tag element
             var tag = document.createElement('div');
             tag.classList.add('category-tag');
             tag.id = 'selected_categories_' + selectedOption;
             tag.innerHTML = selectedText + ' <span class="remove-tag" onclick="removeTag(' + selectedOption + ')">&times;</span>';
 
-            // Append the tag to the selected_categories div
             var selectedCategories = document.querySelector('#selected_categories');
             selectedCategories.appendChild(tag);
 
-            // Update the hidden input value
             updateHiddenInput();
         }
     });
 
     function removeTag(categoryId) {
-        // Xóa thẻ tag trong selected_categories
         var tagToRemove = document.querySelector('#selected_categories_' + categoryId);
         if (tagToRemove) {
             tagToRemove.remove();
         }
 
-        // Cập nhật hidden input
         updateHiddenInput();
     }
 

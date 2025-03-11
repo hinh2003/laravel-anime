@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Chuyển hướng tất cả các yêu cầu HTTP sang HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Giữ lại các quy tắc hiện tại của bạn
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 seconds"
+</IfModule>

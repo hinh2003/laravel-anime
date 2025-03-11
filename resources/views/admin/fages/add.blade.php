@@ -20,8 +20,12 @@
                                 <th><input type="text" name="name_movie" id="name_movie" required></th>
                             </tr>
                             <tr>
+                                <td>Slug</td>
+                                <th><input type="text" name="slug_movie" id="slug_movie" required readonly></th>
+                            </tr>
+                            <tr>
                                 <td>Số Tập</td>
-                                <th><input type="number" name="years" id="years" required></th>
+                                <th><input type="number" name="episodes" id="episodes" required></th>
                             </tr>
                             <tr>
                                 <td>Ảnh</td>
@@ -86,20 +90,16 @@
         var selectedOption = this.value;
         var selectedText = this.options[this.selectedIndex].text;
 
-        // Check if the selected option is already selected
         var isSelected = document.querySelector('#tag_' + selectedOption);
         if (!isSelected) {
-            // Create a new tag element
             var tag = document.createElement('span');
             tag.classList.add('category-tag');
             tag.id = 'tag_' + selectedOption;
             tag.innerHTML = selectedText + '<span class="remove-tag" onclick="removeTag(' + selectedOption + ')">&times;</span>';
 
-            // Append the tag to the selected_categories div
             var selectedCategories = document.querySelector('#selected_categories');
             selectedCategories.appendChild(tag);
 
-            // Update the hidden input value
             updateHiddenInput();
         }
     });
@@ -121,13 +121,7 @@
             categoryIds.push(tagId);
         });
 
-        // Update the hidden input value with comma-separated category ids
         document.querySelector('#name_category').value = categoryIds.join(',');
     }
-
-
-
-
-
 </script>
 

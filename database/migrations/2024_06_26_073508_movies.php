@@ -52,16 +52,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Xóa bảng 'movies' trước
+        Schema::disableForeignKeyConstraints();
+
         Schema::dropIfExists('movies');
-
-        // Xóa bảng 'statuses'
         Schema::dropIfExists('statuses');
-
-        // Xóa bảng 'countries'
         Schema::dropIfExists('countries');
-
-        // Xóa bảng 'categories'
         Schema::dropIfExists('categories');
+
+        Schema::enableForeignKeyConstraints();
     }
+
 };

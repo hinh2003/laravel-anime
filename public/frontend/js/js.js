@@ -86,4 +86,9 @@ function checkvalidate() {
 
 }
 
-
+function switchServer(serverType) {
+    let videoPlayer = document.getElementById('videoPlayer');
+    let linkChap = videoPlayer.dataset.linkChap;
+    let linkAws = videoPlayer.dataset.linkAws;
+    videoPlayer.src = serverType === 'link_chap' ? linkChap : linkAws;
+}
